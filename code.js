@@ -23,7 +23,6 @@ function checkRssFeed(rssUrl, discordWebhookUrl) {
         // 前回の実行時間以降の配信を検出します
         if (!lastExecutionTime || pubDate > new Date(lastExecutionTime)) {
             newItems.push({
-                title: item.getChild('title').getText(),
                 link: item.getChild('link').getText(),
                 pubDate: pubDate
             });
@@ -40,7 +39,7 @@ function checkRssFeed(rssUrl, discordWebhookUrl) {
     newItems.reverse();
 
     for (const item of newItems) {
-        Logger.log(item.title);
+        Logger.log(item.link);
         sendDiscord(discordWebhookUrl, item.link);
         // Discord レート制限対策のため待機
         Utilities.sleep(3000);
