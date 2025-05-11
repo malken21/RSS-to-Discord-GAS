@@ -4,5 +4,7 @@ function sendDiscord(url, text) {
         contentType: 'application/json',
         payload: JSON.stringify(payload(text))
     };
-    UrlFetchApp.fetch(url, options);
+    const response = UrlFetchApp.fetch(url, options);
+    const responseCode = response.getResponseCode();
+    Logger.log(`ResponseCode: ${responseCode}`);
 }
