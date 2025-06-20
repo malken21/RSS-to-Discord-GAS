@@ -32,9 +32,6 @@ function checkRssFeed(rssUrl, discordWebhookUrl) {
     // 新しい配信がない場合は return
     if (newItems.length < 1) return;
 
-    // スクリプトプロパティに読み取った最新の item の時間を保存
-    scriptProperties.setProperty(`lastTime-${rssUrl}`, newItems[0].pubDate.toISOString());
-
     // 配列の要素の順番を破壊的に反転 (古い item から読み込まれるようにするため)
     newItems.reverse();
 
@@ -42,6 +39,9 @@ function checkRssFeed(rssUrl, discordWebhookUrl) {
         Logger.log(item.link);
         sendDiscord(discordWebhookUrl, item.link);
         // Discord レート制限対策のため待機
-        Utilities.sleep(3000);
+        Utilities.sleep(RETRY_DELAY_MS);
     }
+
+    // スクリプトプロパティに読み取った最新の item の時間を保存
+    scriptProperties.setProperty(`lastTime-${rssUrl}`, newItems[0].pubDate.toISOString());
 }
